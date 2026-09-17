@@ -2,3 +2,4 @@
 data/hourly_energy.csv
 data/energy_with_anomalies.csv
 data/enriched_energy_data.csv
+.env
