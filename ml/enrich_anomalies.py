@@ -1,0 +1,98 @@
+import pandas as pd
+
+# Load anomaly results
+df = pd.read_csv("data/energy_with_anomalies.csv")
+
+# Convert datetime
+df["datetime"] = pd.to_datetime(df["datetime"])
+
+# Add useful time information
+df["hour"] = df["datetime"].dt.hour
+df["day_of_week"] = df["datetime"].dt.day_name()
+df["date"] = df["datetime"].dt.date
+
+# Calculate average consumption for each hour using normal observations only
+# (excluding anomalies so the baseline is not skewed by unusual events)
+normal = df[df["is_anomaly"] == 0]
+
+hourly_average = (
+    normal.groupby("hour")["global_active_power"]
+    .mean()
+    .rename("typical_hourly_power")
+)
+
+# Calculate per-feature baselines using normal observations only
+FEATURE_BASELINES = {
+    "sub_metering_1":         "typical_sub_metering_1",
+    "sub_metering_2":         "typical_sub_metering_2",
+    "sub_metering_3":         "typical_sub_metering_3",
+    "global_reactive_power":  "typical_global_reactive_power",
+    "voltage":                "typical_voltage",
+    "global_intensity":       "typical_global_intensity",
+}
+
+feature_baselines = pd.concat(
+    [
+        normal.groupby("hour")[col].mean().rename(name)
+        for col, name in FEATURE_BASELINES.items()
+    ],
+    axis=1,
+)
+
+# Add typical consumption back to each record
+df = df.merge(
+    hourly_average,
+    on="hour",
+    how="left"
+)
+
+# Add per-feature baselines back to each record
+df = df.merge(
+    feature_baselines,
+    on="hour",
+    how="left"
+)
+
+# Calculate percentage difference from typical consumption
+df["difference_percent"] = (
+    (df["global_active_power"] - df["typical_hourly_power"])
+    / df["typical_hourly_power"]
+) * 100
+
+# Save enriched dataset
+df.to_csv("data/enriched_energy_data.csv", index=False)
+
+# Show anomaly examples
+anomalies = df[df["is_anomaly"] == 1]
+
+print("Enrichment completed!")
+print("\nColumns added:")
+print("- hour")
+print("- day_of_week")
+print("- date")
+print("- typical_hourly_power")
+print("- difference_percent")
+print("- typical_sub_metering_1")
+print("- typical_sub_metering_2")
+print("- typical_sub_metering_3")
+print("- typical_global_reactive_power")
+print("- typical_voltage")
+print("- typical_global_intensity")
+
+print("\nSample enriched anomalies:")
+
+print(
+    anomalies[
+        [
+            "datetime",
+            "global_active_power",
+            "day_of_week",
+            "hour",
+            "typical_hourly_power",
+            "difference_percent"
+        ]
+    ]
+    .sort_values("global_active_power", ascending=False)
+    .head(10)
+    .to_string(index=False)
+)

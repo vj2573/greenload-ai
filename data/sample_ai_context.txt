@@ -1,0 +1,21 @@
+
+GreenLoad AI Energy Anomaly
+
+Date: 2008-10-19
+Time: 01:00
+Day: Sunday
+
+Observed electricity consumption:
+5.76 kW
+
+Typical consumption for this hour:
+0.54 kW
+
+Difference from typical consumption:
+967.8%
+
+The machine-learning model classified this observation as an anomaly.
+
+Important:
+The anomaly indicates unusual consumption, but the cause is unknown.
+Do not assume a specific appliance or behavior caused it.
