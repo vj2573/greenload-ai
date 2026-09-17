@@ -67,6 +67,14 @@ df["difference_percent"] = (
     / df["typical_hourly_power"]
 ) * 100
 
+# Add neighboring-hour context (sort chronologically first to ensure correct shift)
+df = df.sort_values("datetime").reset_index(drop=True)
+
+df["previous_hour_power"]              = df["global_active_power"].shift(1)
+df["next_hour_power"]                  = df["global_active_power"].shift(-1)
+df["previous_hour_difference_percent"] = df["difference_percent"].shift(1)
+df["next_hour_difference_percent"]     = df["difference_percent"].shift(-1)
+
 # Save enriched dataset
 df.to_csv("data/enriched_energy_data.csv", index=False)
 
@@ -87,6 +95,10 @@ print("- typical_global_reactive_power")
 print("- typical_voltage")
 print("- typical_global_intensity")
 print("- sub_metering_remainder")
+print("- previous_hour_power")
+print("- next_hour_power")
+print("- previous_hour_difference_percent")
+print("- next_hour_difference_percent")
 
 print("\nSample enriched anomalies:")
 
