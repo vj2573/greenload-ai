@@ -1,21 +1,80 @@
+=== GreenLoad AI — Energy Anomaly Context ===
 
-GreenLoad AI Energy Anomaly
+── 1. TIME CONTEXT ──────────────────────────────────────────────────────────
+Date:         2008-10-19
+Time:         01:00
+Day of week:  Sunday
+Month:        October (10)
+Season:       Autumn
 
-Date: 2008-10-19
-Time: 01:00
-Day: Sunday
+── 2. OBSERVED CONSUMPTION ──────────────────────────────────────────────────
+Global active power:    5.7591 kW
+Global reactive power:  0.4089 kVAR
+Voltage:                235.1248 V
+Global intensity:       24.7133 A
+Sub-metering 1:         11.6333 Wh  (kitchen-related circuit group)
+Sub-metering 2:         24.5333 Wh  (laundry-related circuit group)
+Sub-metering 3:         15.1167 Wh  (HVAC / water-heater-related circuit group)
+Sub-metering remainder: 44.7011 Wh  (unmetered circuits)
 
-Observed electricity consumption:
-5.76 kW
+── 3. NORMAL BASELINE (typical for this hour of day) ────────────────────────
+Typical active power:         0.5311 kW
+Difference from typical:      +984.31%
+Typical sub-metering 1:       0.2329 Wh
+Typical sub-metering 2:       0.3637 Wh
+Typical sub-metering 3:       2.3343 Wh
+Typical global reactive power:0.1047 kVAR
+Typical voltage:              241.7293 V
+Typical global intensity:     2.2770 A
 
-Typical consumption for this hour:
-0.54 kW
+── 4. NEIGHBORING HOURS ─────────────────────────────────────────────────────
+Previous hour power:      5.1555 kW  (+696.21% vs typical)
+Next hour power:          1.1960 kW  (+148.85% vs typical)
 
-Difference from typical consumption:
-967.8%
+── 5. ANOMALY MODEL ─────────────────────────────────────────────────────────
+Anomaly score (decision_function): -0.091604
+  (Negative values indicate anomalies; more negative = more isolated)
+Classification: The Isolation Forest model classified this observation as an
+  ANOMALY (label = -1). It was identified as statistically unusual relative
+  to the 34,168-hour dataset with contamination=0.02.
 
-The machine-learning model classified this observation as an anomaly.
+── 6. SHAP EXPLANATION ──────────────────────────────────────────────────────
+SHAP values below decompose the Isolation Forest's RAW TREE OUTPUT (not the
+decision_function). Each value represents a feature's additive contribution
+to the model's raw score for this observation. The sign and magnitude indicate
+how much each feature shifted the score away from the model's expected value;
+they do NOT directly map to "more anomalous" or "less anomalous" without
+knowing the direction of the model's output scale.
 
-Important:
-The anomaly indicates unusual consumption, but the cause is unknown.
-Do not assume a specific appliance or behavior caused it.
+  shap_global_active_power:    -1.520729
+  shap_global_reactive_power:  -1.354865
+  shap_voltage:                -0.423530
+  shap_global_intensity:       -1.289239
+  shap_sub_metering_1:         -1.125481
+  shap_sub_metering_2:         -1.994222
+  shap_sub_metering_3:         -0.350844
+
+Top 3 features by absolute SHAP contribution: sub_metering_2 (-1.9942), global_active_power (-1.5207), global_reactive_power (-1.3549)
+
+── 7. AI INSTRUCTIONS ───────────────────────────────────────────────────────
+You are an energy analyst assistant. Using ONLY the evidence provided above:
+
+1. EXPLAIN why this observation is unusual. Ground your explanation in the
+   specific numbers: observed vs. typical values, difference_percent,
+   neighboring-hour context, and the SHAP contributions.
+
+2. DISTINGUISH clearly between what the data directly shows (observed
+   evidence) and what might be a possible cause or interpretation.
+
+3. DO NOT claim a specific appliance caused this anomaly unless the
+   sub-metering data provides direct numerical support for that claim.
+   Sub-metering channels cover limited circuits; unmetered remainder
+   (44.70 Wh) may represent the dominant load.
+
+4. PROVIDE 2–3 practical, household-realistic electricity-saving
+   recommendations relevant to the time, season, and consumption pattern
+   shown. Base them on the evidence; do not invent scenarios.
+
+5. DO NOT invent or assume any information not present in this context.
+   If the data is ambiguous, say so.
+=============================================================================
