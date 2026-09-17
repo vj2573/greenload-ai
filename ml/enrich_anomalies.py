@@ -53,6 +53,14 @@ df = df.merge(
     how="left"
 )
 
+# Calculate unmetered remainder (total consumption minus the three sub-metered circuits)
+df["sub_metering_remainder"] = (
+    df["global_active_power"] * 1000 / 60
+    - df["sub_metering_1"]
+    - df["sub_metering_2"]
+    - df["sub_metering_3"]
+)
+
 # Calculate percentage difference from typical consumption
 df["difference_percent"] = (
     (df["global_active_power"] - df["typical_hourly_power"])
@@ -78,6 +86,7 @@ print("- typical_sub_metering_3")
 print("- typical_global_reactive_power")
 print("- typical_voltage")
 print("- typical_global_intensity")
+print("- sub_metering_remainder")
 
 print("\nSample enriched anomalies:")
 
