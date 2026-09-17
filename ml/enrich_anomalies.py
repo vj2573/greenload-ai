@@ -10,6 +10,16 @@ df["datetime"] = pd.to_datetime(df["datetime"])
 df["hour"] = df["datetime"].dt.hour
 df["day_of_week"] = df["datetime"].dt.day_name()
 df["date"] = df["datetime"].dt.date
+df["month"] = df["datetime"].dt.month
+df["month_name"] = df["datetime"].dt.month_name()
+
+SEASON_MAP = {
+    12: "Winter", 1: "Winter", 2: "Winter",
+    3: "Spring", 4: "Spring", 5: "Spring",
+    6: "Summer", 7: "Summer", 8: "Summer",
+    9: "Autumn", 10: "Autumn", 11: "Autumn",
+}
+df["season"] = df["month"].map(SEASON_MAP)
 
 # Calculate average consumption for each hour using normal observations only
 # (excluding anomalies so the baseline is not skewed by unusual events)
@@ -99,6 +109,9 @@ print("- previous_hour_power")
 print("- next_hour_power")
 print("- previous_hour_difference_percent")
 print("- next_hour_difference_percent")
+print("- month")
+print("- month_name")
+print("- season")
 
 print("\nSample enriched anomalies:")
 
