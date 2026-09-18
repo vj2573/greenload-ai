@@ -1,8 +1,5 @@
 ﻿data/household_power_consumption.txt
 data/hourly_energy.csv
-data/energy_with_anomalies.csv
-data/enriched_energy_data.csv
-.envbackend/node_modules/
-
+.env
 backend/node_modules/
 ml/test_bob_key.py
