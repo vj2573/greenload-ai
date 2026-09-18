@@ -375,10 +375,9 @@ It displays:
 
 The information updates when a different anomaly is selected.
 #### Overview Dashboard
+![GreenLoad AI Overview - Part 1](./overview-1.png)
 
-![GreenLoad AI Overview - Part 1](overview-1.png)
-
-![GreenLoad AI Overview - Part 2](overview-2.png)
+![GreenLoad AI Overview - Part 2](./overview-2.png)
 
 ---
 
@@ -398,10 +397,9 @@ The Explain page presents the anomaly as a progressive explanation:
 
 The page also provides sustainability actions based on the selected anomaly.
 #### Explain Dashboard
+![GreenLoad AI Explain - Part 1](./explain-1.png)
 
-![GreenLoad AI Explain - Part 1](explain-1.png)
-
-![GreenLoad AI Explain - Part 2](explain-2.png)
+![GreenLoad AI Explain - Part 2](./explain-2.png)
 
 ---
 
@@ -419,10 +417,9 @@ Users can explore:
 
 The chart provides a visual way to investigate unusual consumption patterns across the historical dataset.
 #### Explore Dashboard
+![GreenLoad AI Explore - Part 1](./explore-1.png)
 
-![GreenLoad AI Explore - Part 1](explore-1.png)
-
-![GreenLoad AI Explore - Part 2](explore-2.png)
+![GreenLoad AI Explore - Part 2](./explore-2.png)
 
 ---
 
