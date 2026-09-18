@@ -1,0 +1,145 @@
+{
+  "summary": "At 01:00 on Sunday, 19 October 2008, global active power was measured at 5.7591 kW — approximately 984% above the typical value of 0.5311 kW for this hour. The Isolation Forest model classified this observation as an anomaly (label = -1, decision_function score = -0.091604). Elevated consumption was already present in the preceding hour (5.1555 kW) and remained above typical in the following hour (1.1960 kW), indicating a sustained high-load period rather than a brief spike. The laundry-related circuit group (sub-metering 2: 24.53 Wh), unmetered remainder (44.70 Wh), and all other measured channels are substantially elevated above their respective baselines.",
+  "evidence": {
+    "observed_vs_typical": {
+      "global_active_power_kW": {
+        "observed": 5.7591,
+        "typical": 0.5311,
+        "pct_above_typical": "+984.31%"
+      },
+      "global_intensity_A": {
+        "observed": 24.7133,
+        "typical": 2.277
+      },
+      "global_reactive_power_kVAR": {
+        "observed": 0.4089,
+        "typical": 0.1047
+      },
+      "voltage_V": {
+        "observed": 235.1248,
+        "typical": 241.7293,
+        "difference": "-6.60 V below typical"
+      },
+      "sub_metering_1_Wh": {
+        "observed": 11.6333,
+        "typical": 0.2329,
+        "note": "kitchen-related circuit group"
+      },
+      "sub_metering_2_Wh": {
+        "observed": 24.5333,
+        "typical": 0.3637,
+        "note": "laundry-related circuit group"
+      },
+      "sub_metering_3_Wh": {
+        "observed": 15.1167,
+        "typical": 2.3343,
+        "note": "HVAC/water-heater-related circuit group"
+      },
+      "sub_metering_remainder_Wh": {
+        "observed": 44.7011,
+        "typical": "not provided",
+        "note": "unmetered circuits; largest single consumption component this interval"
+      }
+    },
+    "temporal_context": {
+      "previous_hour_kW": 5.1555,
+      "current_hour_kW": 5.7591,
+      "next_hour_kW": 1.196,
+      "interpretation": "OBSERVED: Consumption was elevated across at least two consecutive hours before declining sharply. This is consistent with a sustained load event rather than an instantaneous spike."
+    },
+    "anomaly_model": {
+      "decision_function_score": -0.091604,
+      "label": -1,
+      "classification": "Classified as an anomaly by the Isolation Forest model relative to the 34,168-hour dataset (contamination = 0.02)."
+    }
+  },
+  "shap_explanation": {
+    "note": "SHAP values decompose the Isolation Forest's RAW TREE OUTPUT for this observation. They represent each feature's additive contribution to the model's raw score relative to the model's expected baseline value. The sign and magnitude indicate how much each feature shifted the raw score; they do NOT directly indicate 'more anomalous' or 'less anomalous' without knowing the direction of the model's output scale, and they do NOT map directly to the decision_function score.",
+    "top_contributors_by_absolute_value": [
+      {
+        "feature": "sub_metering_2 (laundry-related circuit group)",
+        "shap_value": -1.9942,
+        "observed_value": "24.5333 Wh vs. typical 0.3637 Wh",
+        "interpretation": "The largest absolute SHAP contribution. The laundry-related circuit group is substantially elevated above its typical value and is the single strongest driver of the model's raw score shift for this observation."
+      },
+      {
+        "feature": "global_active_power",
+        "shap_value": -1.5207,
+        "observed_value": "5.7591 kW vs. typical 0.5311 kW",
+        "interpretation": "Second-largest absolute contributor. Overall power draw is nearly 10× the typical baseline, strongly differentiating this observation from typical patterns in the training data."
+      },
+      {
+        "feature": "global_reactive_power",
+        "shap_value": -1.3549,
+        "observed_value": "0.4089 kVAR vs. typical 0.1047 kVAR",
+        "interpretation": "Third-largest absolute contributor. Reactive power is approximately 4× the typical value, consistent with one or more inductive or capacitive loads being active at elevated levels."
+      }
+    ],
+    "remaining_contributors": [
+      {
+        "feature": "global_intensity",
+        "shap_value": -1.2892
+      },
+      {
+        "feature": "sub_metering_1",
+        "shap_value": -1.1255
+      },
+      {
+        "feature": "sub_metering_3",
+        "shap_value": -0.3508
+      },
+      {
+        "feature": "voltage",
+        "shap_value": -0.4235
+      }
+    ]
+  },
+  "possible_explanations": [
+    {
+      "label": "POSSIBLE",
+      "explanation": "The unmetered remainder (44.70 Wh) is the largest single consumption component this interval and exceeds the total of all three sub-metered channels combined. One or more loads on unmetered circuits may be the primary driver of the elevated global active power. The data does not identify which circuits or devices are responsible."
+    },
+    {
+      "label": "POSSIBLE",
+      "explanation": "The laundry-related circuit group (sub-metering 2) shows the strongest SHAP contribution and is approximately 67× its typical value. This is consistent with activity on that circuit group, but the data does not identify which specific appliance within that circuit group is responsible."
+    },
+    {
+      "label": "POSSIBLE",
+      "explanation": "All three sub-metered circuit groups and the unmetered remainder are simultaneously elevated above their typical values. This is consistent with concurrent activity across multiple circuits, but the data does not confirm whether these loads started at the same time or are causally related."
+    },
+    {
+      "label": "POSSIBLE",
+      "explanation": "The elevated reactive power (0.4089 kVAR vs. typical 0.1047 kVAR) is consistent with one or more inductive loads (such as motors or compressors, as hypothetical examples only) being active. The data does not confirm which load type is responsible."
+    },
+    {
+      "label": "OBSERVED — voltage difference only",
+      "explanation": "Voltage is measured at 235.12 V, which is 6.60 V below the typical value of 241.73 V for this hour. This is an observation only. The data does not establish a causal relationship between the high load and this voltage difference."
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "High",
+      "action": "Investigate the unmetered remainder circuits",
+      "rationale": "The unmetered remainder (44.70 Wh) is the single largest consumption component this interval and is not attributable to any identified circuit group. Identifying and sub-metering these circuits would improve visibility into where the majority of the load originated."
+    },
+    {
+      "priority": "High",
+      "action": "Review activity on the laundry-related circuit group (sub-metering 2)",
+      "rationale": "Sub-metering 2 recorded 24.53 Wh — approximately 67× its typical value for this hour and the strongest SHAP contributor. Reviewing usage logs or schedules for this circuit group during this period would help determine whether this consumption was intentional or unexpected."
+    },
+    {
+      "priority": "Medium",
+      "action": "Monitor for recurrence of sustained high-load periods spanning multiple hours",
+      "rationale": "The preceding hour also recorded 5.16 kW (+696% above typical), indicating this was not an isolated one-minute event. Tracking multi-hour elevated consumption patterns can help distinguish scheduled high-load activity from unintended or inefficient operation."
+    }
+  ],
+  "limitations": [
+    "Sub-metering channels identify circuit groups, not individual appliances. No specific appliance can be named as the cause of this anomaly from the available data.",
+    "The unmetered remainder (44.70 Wh) is the largest consumption component and is entirely unattributed. Any explanation of total consumption that does not account for these circuits is incomplete.",
+    "The Isolation Forest model was trained with contamination=0.02, meaning approximately 2% of observations are expected to be flagged. The anomaly score (-0.091604) is relatively close to the decision boundary; no statistical significance test result is provided.",
+    "SHAP values explain contributions to the model's raw tree output and cannot be directly interpreted as measures of anomaly severity or as causal factors in energy consumption.",
+    "No causal relationship between the observed voltage drop (-6.60 V) and the high load is established by the available data.",
+    "Typical baseline values represent the historical average for this hour; they do not represent a minimum or guaranteed consumption floor, and deviations from them are not inherently problematic without further context.",
+    "No information is available about scheduled activities, household context, or external factors (e.g., weather, grid events) that could provide alternative explanations for the observed consumption."
+  ]
+}
