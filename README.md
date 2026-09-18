@@ -1,5 +1,15 @@
 # GreenLoad AI
 
+## 🚀 Live Demo
+
+**[View GreenLoad AI Live Demo](https://greenload-ai.vercel.app/)**
+
+The frontend is deployed on Vercel and the backend API is deployed on Render.
+
+GreenLoad AI is an explainable AI system for detecting unusual household electricity consumption and generating evidence-based sustainability recommendations.
+
+
+
 ### Explainable AI for Energy Consumption Anomaly Detection and Sustainable Action Recommendations
 
 GreenLoad AI is an Explainable AI system that analyzes historical household electricity consumption data, detects unusual energy consumption patterns, explains the factors behind detected anomalies, and provides practical sustainability recommendations.
