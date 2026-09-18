@@ -417,8 +417,6 @@ The chart provides a visual way to investigate unusual consumption patterns acro
 GreenLoad-AI/
 │
 ├── data/
-│   ├── household_power_consumption.txt
-│   ├── hourly_energy.csv
 │   ├── energy_with_anomalies.csv
 │   ├── enriched_energy_data.csv
 │   ├── anomaly_shap.csv
@@ -445,12 +443,12 @@ GreenLoad-AI/
 │   └── vite.config.js
 │
 ├── docs/
-│
 ├── .gitignore
 └── README.md
 ```
 
 Large datasets, generated files, environment variables, and local dependencies are excluded from version control where appropriate.
+The original UCI raw dataset and intermediate hourly dataset are excluded from version control because of their size. They are generated/downloaded locally during the ML pipeline.
 
 ---
 
